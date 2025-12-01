@@ -1,143 +1,715 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>我的个人资源站</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>我的个人资源中心</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 24px 16px;
-            line-height: 1.6;
-            background: #fafafa;
-        }
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.15);
+      --border: #1f2937;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --sidebar-width: 260px;
+      --header-height: 56px;
+    }
 
-        header {
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 12px;
-            margin-bottom: 24px;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        h1 {
-            margin: 0 0 8px;
-            font-size: 32px;
-        }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .nav a {
-            margin-right: 16px;
-            text-decoration: none;
-            font-weight: 600;
-            color: #333;
-        }
+    /* 顶部栏 */
 
-        section {
-            margin-top: 36px;
-            padding: 16px;
-            background: #fff;
-            border-radius: 8px;
-            border: 1px solid #e5e5e5;
-        }
+    header {
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(90deg, #020617, #0f172a);
+    }
 
-        h2 {
-            margin-top: 0;
-            font-size: 24px;
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
 
-        ul {
-            padding-left: 20px;
-        }
+    .brand-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, transparent 55%),
+                  radial-gradient(circle at 70% 80%, #6366f1, transparent 55%);
+    }
 
-        footer {
-            margin-top: 40px;
-            padding-top: 16px;
-            border-top: 1px solid #ddd;
-            color: #666;
-            font-size: 14px;
-        }
+    .top-tabs {
+      display: flex;
+      gap: 8px;
+      margin-left: 16px;
+      flex-wrap: wrap;
+    }
 
-        .resource-item {
-            margin-bottom: 6px;
-        }
-    </style>
+    .top-tab {
+      border-radius: 999px;
+      padding: 4px 12px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+    }
 
+    .top-tab.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--text-main);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .menu-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-soft);
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    /* 主体布局 */
+
+    .layout {
+      flex: 1;
+      display: flex;
+      min-height: calc(100vh - var(--header-height));
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      border-right: 1px solid var(--border);
+      background: var(--bg-soft);
+      padding: 12px 8px;
+      overflow-y: auto;
+      transition: width 0.2s ease, opacity 0.2s ease;
+    }
+
+    .sidebar.hidden {
+      width: 0;
+      opacity: 0;
+      padding: 0;
+      border-right: none;
+    }
+
+    .sidebar-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin: 0 4px 8px;
+    }
+
+    .menu-tree {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .menu-item {
+      margin-bottom: 4px;
+    }
+
+    .menu-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .menu-label:hover {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .menu-label.active {
+      background: var(--accent-soft);
+      color: var(--text-main);
+    }
+
+    .menu-label .chevron {
+      font-size: 10px;
+      width: 12px;
+      text-align: center;
+    }
+
+    .menu-label.leaf .chevron {
+      opacity: 0;
+    }
+
+    .menu-children {
+      list-style: none;
+      padding-left: 14px;
+      margin: 2px 0 4px;
+      border-left: 1px solid rgba(55, 65, 81, 0.7);
+    }
+
+    .menu-item.collapsed > .menu-children {
+      display: none;
+    }
+
+    .menu-level-1 .menu-label { font-weight: 600; }
+    .menu-level-2 .menu-label { font-size: 13px; }
+    .menu-level-3 .menu-label { font-size: 13px; opacity: 0.9; }
+
+    /* 内容区 */
+
+    .content {
+      flex: 1;
+      padding: 16px 20px 24px;
+      overflow-y: auto;
+    }
+
+    .content-card {
+      max-width: 960px;
+      margin: 0 auto;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.08), transparent 55%),
+                  #020617;
+      border-radius: 16px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 20px 20px 24px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.65);
+    }
+
+    .content-tagline {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .content-title {
+      font-size: 22px;
+      margin: 0 0 10px;
+    }
+
+    .content-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .content-body {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #e5e7eb;
+    }
+
+    .content-body p {
+      margin: 0 0 10px;
+    }
+
+    .content-body ul {
+      padding-left: 18px;
+      margin: 6px 0 10px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+    }
+
+    .pill.main {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(8, 47, 73, 0.8);
+    }
+
+    @media (max-width: 800px) {
+      .sidebar {
+        position: absolute;
+        z-index: 10;
+        height: calc(100vh - var(--header-height));
+      }
+      .sidebar.hidden {
+        transform: translateX(-100%);
+        width: var(--sidebar-width);
+        opacity: 1;
+        padding: 12px 8px;
+        border-right: 1px solid var(--border);
+      }
+      .content {
+        padding: 12px 12px 20px;
+      }
+      .content-card {
+        padding: 16px 14px 18px;
+      }
+    }
+  </style>
 </head>
 <body>
 
 <header>
-    <h1>我的个人资源站</h1>
-    <p>用于记录我平时收集的资料、文件、信息、数据、链接、学习笔记等。</p>
-
-    <div class="nav">
-        <a href="#resources">资源记录</a>
-        <a href="#notes">信息笔记</a>
-        <a href="#files">文件下载</a>
-        <a href="#links">常用链接</a>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div class="brand">
+      <div class="brand-logo"></div>
+      <span>个人资源中心</span>
     </div>
+    <nav id="topTabs" class="top-tabs"></nav>
+  </div>
+
+  <div class="header-right">
+    <span id="currentTabName"></span>
+    <button id="menuToggle" class="menu-toggle" title="展开/收起左侧菜单">☰</button>
+  </div>
 </header>
 
+<div class="layout">
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-title">当前模块菜单</div>
+    <ul id="menuTree" class="menu-tree"></ul>
+  </aside>
 
-<!-- 资源记录 Section -->
-<section id="resources">
-    <h2>📂 资源记录</h2>
-    <p>这里用来整理我收集的各种资源：文章、资料、教程、想法等等。</p>
-
-    <ul>
-        <li class="resource-item">示例：某本书的摘要</li>
-        <li class="resource-item">示例：某篇文章的重点记录</li>
-        <li class="resource-item">示例：某个学习视频的笔记</li>
-    </ul>
-</section>
-
-
-<!-- 信息笔记 Section -->
-<section id="notes">
-    <h2>📝 信息笔记</h2>
-    <p>用于记录自己的想法、日常积累、过程笔记、学习记录等内容。</p>
-
-    <ul>
-        <li class="resource-item">示例：今天学到的知识 A</li>
-        <li class="resource-item">示例：对某个问题的分析 B</li>
-        <li class="resource-item">示例：未来想做某件事的计划 C</li>
-    </ul>
-</section>
-
-
-<!-- 文件下载 Section -->
-<section id="files">
-    <h2>📥 文件下载区</h2>
-    <p>将文件上传到仓库的 <code>文件</code> 文件夹后，在此处添加链接即可。</p>
-
-    <ul>
-        <li>
-            示例文件：
-            <a href="files/demo.txt" target="_blank">demo.txt</a>
-        </li>
-    </ul>
-</section>
-
-
-<!-- 常用链接 Section -->
-<section id="links">
-    <h2>🔗 常用链接</h2>
-    <p>记录我经常访问或觉得有用的网页。</p>
-
-    <ul>
-        <li><a href="https://github.com" target="_blank">GitHub</a></li>
-        <li><a href="https://google.com" target="_blank">Google</a></li>
-    </ul>
-</section>
-
-
-<footer>
-    本站仅作为个人记录与资料整理使用。<br>
-    &copy; <span id="year"></span>
-</footer>
+  <main class="content">
+    <div id="contentCard" class="content-card">
+      <!-- 内容通过 JS 渲染 -->
+    </div>
+  </main>
+</div>
 
 <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+  // ========= 配置：顶部 Tab + 左侧多级菜单 + 每个节点对应的内容 =========
+  // 后台上线以后，可以把这块改成从接口获取 JSON，再渲染。
+
+  const appConfig = {
+    tabs: [
+      {
+        id: "overview",
+        name: "总览",
+        tagline: "Overview",
+        menu: [
+          {
+            id: "overview-dashboard",
+            title: "仪表盘",
+            level: 1,
+            children: [
+              {
+                id: "overview-today",
+                title: "今天的记录",
+                level: 2,
+                content: {
+                  title: "今天的记录概览",
+                  desc: "快速浏览今天记录过的资源、笔记和待处理事项。",
+                  tags: ["总览", "按时间", "日常"],
+                  body: `
+                    <p>这里可以写你每天的简要记录，比如：</p>
+                    <ul>
+                      <li>今天新增了哪些资源？</li>
+                      <li>有哪些待整理、待标注的内容？</li>
+                      <li>是否有需要后续深入分析的想法？</li>
+                    </ul>
+                    <p>后面你可以把这部分当作“每日简报”，形成长期可追踪的记录。</p>
+                  `
+                }
+              },
+              {
+                id: "overview-structure",
+                title: "结构说明",
+                level: 2,
+                content: {
+                  title: "站点结构说明",
+                  desc: "解释整个资源中心的模块划分、菜单层级和使用方式。",
+                  tags: ["结构", "说明"],
+                  body: `
+                    <p>你可以在这里说明：</p>
+                    <ul>
+                      <li>顶部每个模块（Tab）主要收什么内容。</li>
+                      <li>左侧菜单的分级规则（一级是大类，二级是子类，三级是具体主题）。</li>
+                      <li>未来准备怎么通过后台来管理这些菜单和页面。</li>
+                    </ul>
+                    <p>建议把这里当做“总使用说明”，方便以后自己回顾，也方便分享给别人看。</p>
+                  `
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "library",
+        name: "资源库",
+        tagline: "Resources",
+        menu: [
+          {
+            id: "lib-docs",
+            title: "文档资料",
+            level: 1,
+            children: [
+              {
+                id: "lib-docs-reports",
+                title: "报告与总结",
+                level: 2,
+                children: [
+                  {
+                    id: "lib-docs-reports-1",
+                    title: "示例：某主题研究笔记",
+                    level: 3,
+                    content: {
+                      title: "示例：某主题研究笔记",
+                      desc: "这里可以作为一个模板，用来记录你对某个主题的系统性整理。",
+                      tags: ["模板", "笔记"],
+                      body: `
+                        <p>你可以按这样的方式来整理：</p>
+                        <ul>
+                          <li><b>一、背景与问题</b>：为什么要研究这个？</li>
+                          <li><b>二、数据来源</b>：用了哪些公开或自建的数据？</li>
+                          <li><b>三、关键发现</b>：几条简明扼要的结论。</li>
+                          <li><b>四、后续问题</b>：下一步还想查什么？</li>
+                        </ul>
+                        <p>后面只要复制这一页的结构，就可以快速生成多份主题笔记。</p>
+                      `
+                    }
+                  }
+                ]
+              },
+              {
+                id: "lib-docs-raw",
+                title: "原始资料备忘",
+                level: 2,
+                content: {
+                  title: "原始资料备忘",
+                  desc: "记录重要资料的保存位置、文件名命名规则、原始链接等。",
+                  tags: ["路径", "命名规则"],
+                  body: `
+                    <p>建议在这里记录：</p>
+                    <ul>
+                      <li>本地或网盘路径，如 <code>D:/data/... </code> 或某云盘地址。</li>
+                      <li>命名规则，例如：<code>年份_主题_版本号</code>。</li>
+                      <li>如果来源于网页，附上原始链接，方便以后复查。</li>
+                    </ul>
+                  `
+                }
+              }
+            ]
+          },
+          {
+            id: "lib-links",
+            title: "外部链接",
+            level: 1,
+            children: [
+              {
+                id: "lib-links-common",
+                title: "常用网站",
+                level: 2,
+                content: {
+                  title: "常用网站",
+                  desc: "集中整理你高频访问的工具站点、数据库、资讯源。",
+                  tags: ["链接", "导航"],
+                  body: `
+                    <p>比如：</p>
+                    <ul>
+                      <li>文献检索网站</li>
+                      <li>数据下载平台</li>
+                      <li>官方统计或公告页面</li>
+                    </ul>
+                    <p>这里只写说明，具体的网址可以后续做成列表或表格，甚至放到单独文件中。</p>
+                  `
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "notes",
+        name: "笔记与想法",
+        tagline: "Notes",
+        menu: [
+          {
+            id: "notes-inbox",
+            title: "收件箱（临时想法）",
+            level: 1,
+            children: [
+              {
+                id: "notes-inbox-howto",
+                title: "如何使用这一栏",
+                level: 2,
+                content: {
+                  title: "临时想法收集区",
+                  desc: "把一时想到但还没来得及整理的内容先扔到这里。",
+                  tags: ["收件箱", "脑图"],
+                  body: `
+                    <p>简单记录要点即可：</p>
+                    <ul>
+                      <li>一句话写下想法的核心。</li>
+                      <li>标注来自哪里（看到谁说的 / 读到哪篇东西）。</li>
+                      <li>标一下优先级：立刻做 / 以后再看。</li>
+                    </ul>
+                    <p>等内容积累多了，再批量归类到其他模块。</p>
+                  `
+                }
+              }
+            ]
+          },
+          {
+            id: "notes-method",
+            title: "方法论",
+            level: 1,
+            children: [
+              {
+                id: "notes-method-template",
+                title: "自己的整理方法模板",
+                level: 2,
+                content: {
+                  title: "整理方法与习惯",
+                  desc: "记录你自己总结出来的、适合你的资料整理方法。",
+                  tags: ["方法论", "习惯"],
+                  body: `
+                    <p>可以包括：</p>
+                    <ul>
+                      <li>你如何给资料打标签和分类。</li>
+                      <li>如何区分“原始数据”“中间稿”“最终输出”。</li>
+                      <li>如何命名文件、如何备份。</li>
+                    </ul>
+                    <p>这些内容越清晰，将来接后台、做自动化时就越容易。</p>
+                  `
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+
+  // ========== 状态与工具函数 ==========
+
+  let state = {
+    activeTabId: appConfig.tabs[0].id,
+    activeItemId: null
+  };
+
+  function findTab(tabId) {
+    return appConfig.tabs.find(t => t.id === tabId);
+  }
+
+  function findFirstLeafItem(tab) {
+    function dfs(list) {
+      for (const item of list) {
+        if (item.children && item.children.length) {
+          const found = dfs(item.children);
+          if (found) return found;
+        } else if (item.content) {
+          return item;
+        }
+      }
+      return null;
+    }
+    return dfs(tab.menu);
+  }
+
+  function findMenuItemById(tab, id) {
+    let result = null;
+    function dfs(items) {
+      for (const item of items) {
+        if (item.id === id) {
+          result = item;
+          return;
+        }
+        if (item.children) dfs(item.children);
+      }
+    }
+    dfs(tab.menu);
+    return result;
+  }
+
+  // ========== 渲染顶部 Tab ==========
+
+  function renderTopTabs() {
+    const container = document.getElementById("topTabs");
+    container.innerHTML = "";
+    appConfig.tabs.forEach(tab => {
+      const btn = document.createElement("button");
+      btn.className = "top-tab" + (tab.id === state.activeTabId ? " active" : "");
+      btn.textContent = tab.name;
+      btn.dataset.tabId = tab.id;
+      btn.addEventListener("click", () => {
+        if (state.activeTabId !== tab.id) {
+          state.activeTabId = tab.id;
+          const firstLeaf = findFirstLeafItem(tab);
+          state.activeItemId = firstLeaf ? firstLeaf.id : null;
+          renderTopTabs();
+          renderSidebar();
+          renderContent();
+        }
+      });
+      container.appendChild(btn);
+    });
+
+    const currentTab = findTab(state.activeTabId);
+    document.getElementById("currentTabName").textContent =
+      currentTab ? currentTab.name : "";
+  }
+
+  // ========== 渲染侧边菜单 ==========
+
+  function renderSidebar() {
+    const sidebar = document.getElementById("menuTree");
+    sidebar.innerHTML = "";
+    const tab = findTab(state.activeTabId);
+    if (!tab) return;
+
+    function createMenu(items, level) {
+      const ul = document.createElement("ul");
+      ul.className = "menu-children menu-level-" + level;
+      if (level === 1) ul.classList.add("menu-root");
+
+      items.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "menu-item menu-level-" + level;
+        li.dataset.id = item.id;
+
+        const hasChildren = item.children && item.children.length > 0;
+        const isLeaf = !hasChildren;
+        const label = document.createElement("div");
+        label.className = "menu-label" + (isLeaf ? " leaf" : "");
+        if (state.activeItemId === item.id) {
+          label.classList.add("active");
+        }
+
+        const chevron = document.createElement("span");
+        chevron.className = "chevron";
+        chevron.textContent = hasChildren ? "▾" : "•";
+
+        const text = document.createElement("span");
+        text.textContent = item.title;
+
+        label.appendChild(chevron);
+        label.appendChild(text);
+        li.appendChild(label);
+
+        if (hasChildren) {
+          li.appendChild(createMenu(item.children, level + 1));
+        }
+
+        label.addEventListener("click", () => {
+          if (hasChildren && !item.content) {
+            li.classList.toggle("collapsed");
+            chevron.textContent = li.classList.contains("collapsed") ? "▸" : "▾";
+          } else {
+            state.activeItemId = item.id;
+            renderSidebar();
+            renderContent();
+          }
+        });
+
+        ul.appendChild(li);
+      });
+
+      return ul;
+    }
+
+    const root = createMenu(tab.menu, 1);
+    sidebar.appendChild(root);
+  }
+
+  // ========== 渲染内容 ==========
+
+  function renderContent() {
+    const card = document。getElementById("contentCard");
+    const tab = findTab(state。activeTabId);
+    if (!tab) return;
+
+    let item = state.activeItemId ? findMenuItemById(tab, state.activeItemId) : null;
+    if (!item) {
+      item = findFirstLeafItem(tab);
+      state。activeItemId = item ? item。id : null;
+    }
+
+    if (!item || !item.content) {
+      card。innerHTML = `
+        <div class="content-tagline">${tab。tagline || ""}</div>
+        <h2 class="content-title">${tab.name}</h2>
+        <p class="content-desc">当前模块暂时没有具体页面内容，可以在配置中为菜单项添加 <code>content</code>。</p>
+      `;
+      return;
+    }
+
+    const { title, desc, tags, body } = item.content;
+
+    card。innerHTML = `
+      <div class="content-tagline">${tab。tagline || ""}</div>
+      <h2 class="content-title">${title}</h2>
+      <p class="content-desc">${desc || ""}</p>
+      <div class="pill-row">
+        <div class="pill main">当前模块：${tab。name}</div>
+        ${(tags || [])。map(t => `<div class="pill">${t}</div>`).join("")}
+      </div>
+      <div class="content-body">
+        ${body || ""}
+      </div>
+    `;
+  }
+
+  // ========== 左侧菜单展开/收起按钮 ==========
+
+  document.getElementById("menuToggle").addEventListener("click", () => {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("hidden");
+  });
+
+  // ========== 初始化 ==========
+
+  (function init() {
+    const tab = findTab(state.activeTabId);
+    const firstLeaf = findFirstLeafItem(tab);
+    state.activeItemId = firstLeaf ? firstLeaf.id : null;
+    renderTopTabs();
+    renderSidebar();
+    renderContent();
+  })();
 </script>
 
 </body>
