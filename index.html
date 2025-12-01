@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的个人资源站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            line-height: 1.6;
+            background: #fafafa;
+        }
+
+        header {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .nav a {
+            margin-right: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            color: #333;
+        }
+
+        section {
+            margin-top: 36px;
+            padding: 16px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e5e5e5;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .resource-item {
+            margin-bottom: 6px;
+        }
+    </style>
+
+</head>
+<body>
+
+<header>
+    <h1>我的个人资源站</h1>
+    <p>用于记录我平时收集的资料、文件、信息、数据、链接、学习笔记等。</p>
+
+    <div class="nav">
+        <a href="#resources">资源记录</a>
+        <a href="#notes">信息笔记</a>
+        <a href="#files">文件下载</a>
+        <a href="#links">常用链接</a>
+    </div>
+</header>
+
+
+<!-- 资源记录 Section -->
+<section id="resources">
+    <h2>📂 资源记录</h2>
+    <p>这里用来整理我收集的各种资源：文章、资料、教程、想法等等。</p>
+
+    <ul>
+        <li class="resource-item">示例：某本书的摘要</li>
+        <li class="resource-item">示例：某篇文章的重点记录</li>
+        <li class="resource-item">示例：某个学习视频的笔记</li>
+    </ul>
+</section>
+
+
+<!-- 信息笔记 Section -->
+<section id="notes">
+    <h2>📝 信息笔记</h2>
+    <p>用于记录自己的想法、日常积累、过程笔记、学习记录等内容。</p>
+
+    <ul>
+        <li class="resource-item">示例：今天学到的知识 A</li>
+        <li class="resource-item">示例：对某个问题的分析 B</li>
+        <li class="resource-item">示例：未来想做某件事的计划 C</li>
+    </ul>
+</section>
+
+
+<!-- 文件下载 Section -->
+<section id="files">
+    <h2>📥 文件下载区</h2>
+    <p>将文件上传到仓库的 <code>文件</code> 文件夹后，在此处添加链接即可。</p>
+
+    <ul>
+        <li>
+            示例文件：
+            <a href="files/demo.txt" target="_blank">demo.txt</a>
+        </li>
+    </ul>
+</section>
+
+
+<!-- 常用链接 Section -->
+<section id="links">
+    <h2>🔗 常用链接</h2>
+    <p>记录我经常访问或觉得有用的网页。</p>
+
+    <ul>
+        <li><a href="https://github.com" target="_blank">GitHub</a></li>
+        <li><a href="https://google.com" target="_blank">Google</a></li>
+    </ul>
+</section>
+
+
+<footer>
+    本站仅作为个人记录与资料整理使用。<br>
+    &copy; <span id="year"></span>
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
